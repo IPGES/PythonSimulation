@@ -16,7 +16,7 @@ GPIO.setup(12, GPIO.OUT)'''
 p = GPIO.PWM(12, 50)    #channel 12, frequency 50Hz
 p.start(0)'''
 dc = 0
-
+'''
 #Choose Port
 print("These are all the available ports:")
 print(serial_ports())
@@ -25,6 +25,7 @@ print("You chose: ", portNum)
 ser = serial.Serial(port=portNum, baudrate=115200, timeout=10) #need to set time
 ser.flushInput()
 ser.flushOutput()
+'''
 
 #Set entries per day -- we only simulate one day (could change if you increase this)
 #WAS       144 entries per day @ 1 per 10 minutes
@@ -81,19 +82,22 @@ scale_factor = maxOutput * 1.05
 
 print("Before plot")
 # #Set up plot
-'''
 pyplot.figure()
-windplot = pyplot.plot(time_array, wind_output, label='wind')
-solarplot = pyplot.plot(time_array, solar_output, label='solar')
+windplot = pyplot.plot(time_array, wind_output, label='wind', c='b')
+solarplot = pyplot.plot(time_array, solar_output, label='solar', c='m')
 pyplot.axis([0.0,24.0,-2, maxSolar*1.1])
 pyplot.ylabel('Megawatts')
 pyplot.xlabel('Time of Day (Hours)')
-pyplot.legend(handles=windplot)
+pyplot.legend()
+#pyplot.legend([windplot, solarplot], ['Wind', 'Solar'])
+#pyplot.legend(handles=windplot)
 plot_title = 'Daily Renewables Output on {}/{}/2006'
 pyplot.title(plot_title.format(m,d))
 pyplot.grid()
 pyplot.ion()
-pyplot.show()'''
+pyplot.show()
+pyplot.draw()
+pyplot.pause(0.01)
 print("After plot")
 
 #Write to potentiometer for Solar Output
@@ -133,20 +137,22 @@ def write_dc(val):
 
 try:
     for i in range(0, entries_per_day):
-        '''pyplot.scatter(time_array[i], wind_input[i])
-        pyplot.scatter(time_array[i], solar_input[i])
+        pyplot.scatter(time_array[i], wind_output[i], c='b')
+        pyplot.scatter(time_array[i], solar_output[i], c='m')
+        print("Wind input: ", wind_output[i], "Solar input: ", solar_output[i])
         pyplot.draw()
-        pyplot.pause(0.01)'''
-        next_dc = int(math.floor(100*(wind_output[i]/scale_factor)))    #gets duty cycle 
-        write_dc(next_dc)
+        pyplot.pause(0.01)
+        #next_dc = int(math.floor(100*(wind_output[i]/scale_factor)))    #gets duty cycle
+        #write_dc(next_dc)
         #adjust_dc(next_dc)
         #write_pot(int(round(solar_SPI[start_point + i])))
+        '''
         print("Current Time: ", time_array[i])
         print("Wind Output: ", wind_output[i])
         #print("Current duty cycle: " + str(dc))
         print("Current SPI: " + str(int(round(solar_SPI[start_point + i]))))
         print('')
-        time.sleep(1)
+        time.sleep(1)'''
 except KeyboardInterrupt:
     pass
 
