@@ -84,7 +84,7 @@ print("Before plot")
 # #Set up plot
 pyplot.figure()
 windplot = pyplot.plot(time_array, wind_output, label='wind', c='b')
-solarplot = pyplot.plot(time_array, solar_output, label='solar', c='m')
+solarplot = pyplot.plot(time_array, solar_output, label='solar', c='r')
 pyplot.axis([0.0,24.0,-2, maxSolar*1.1])
 pyplot.ylabel('Megawatts')
 pyplot.xlabel('Time of Day (Hours)')
@@ -138,7 +138,7 @@ def write_dc(val):
 try:
     for i in range(0, entries_per_day):
         pyplot.scatter(time_array[i], wind_output[i], c='b')
-        pyplot.scatter(time_array[i], solar_output[i], c='m')
+        pyplot.scatter(time_array[i], solar_output[i], c='r')
         print("Wind input: ", wind_output[i], "Solar input: ", solar_output[i])
         pyplot.draw()
         pyplot.pause(0.01)
