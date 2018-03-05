@@ -16,7 +16,7 @@ GPIO.setup(12, GPIO.OUT)'''
 p = GPIO.PWM(12, 50)    #channel 12, frequency 50Hz
 p.start(0)'''
 dc = 0
-'''
+
 #Choose Port
 print("These are all the available ports:")
 print(serial_ports())
@@ -25,7 +25,7 @@ print("You chose: ", portNum)
 ser = serial.Serial(port=portNum, baudrate=115200, timeout=10) #need to set time
 ser.flushInput()
 ser.flushOutput()
-'''
+
 
 #Set entries per day -- we only simulate one day (could change if you increase this)
 #WAS       144 entries per day @ 1 per 10 minutes
@@ -118,6 +118,7 @@ def adjust_dc(val):
         time.sleep(0.3)
     dc = val
 
+#write dc to tm4c -- replaces adjust_dc
 def write_dc(val):
     global dc
     increment = (1) if (val > dc) else (-1)
@@ -128,10 +129,10 @@ def write_dc(val):
             temp = '0' + str(x)
         str1 = ('PWM ' + str(temp) + '\n')
         ser.write(str1.encode())
-        time.sleep(0.3)
+        #time.sleep(0.3)
     dc = val
 
-#ready = input("Ready?")
+trash = input("Waiting for any input to begin...")
 #Main Loop
 #if (ready == "y"):
 
@@ -142,9 +143,9 @@ try:
         print("Wind input: ", wind_output[i], "Solar input: ", solar_output[i])
         pyplot.draw()
         pyplot.pause(0.01)
-        #next_dc = int(math.floor(100*(wind_output[i]/scale_factor)))    #gets duty cycle
-        #write_dc(next_dc)
-        #adjust_dc(next_dc)
+        next_dc = int(math.floor(100*(wind_output[i]/scale_factor)))    #gets duty cycle
+        write_dc(next_dc)
+        ##adjust_dc(next_dc)
         #write_pot(int(round(solar_SPI[start_point + i])))
         '''
         print("Current Time: ", time_array[i])
@@ -156,9 +157,9 @@ try:
 except KeyboardInterrupt:
     pass
 
-adjust_dc(0)
-p.stop()
-GPIO.cleanup()
+write_dc(0)
+#p.stop()
+#GPIO.cleanup()
 
 # #Set up plot
 # pyplot.figure()

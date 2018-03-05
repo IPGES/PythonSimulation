@@ -49,7 +49,7 @@ def write_pot(Pot):
 
 def write_dc(val):
     global dc
-    increment = (1) if (val > dc) else (-1)
+    '''increment = (1) if (val > dc) else (-1)
     for x in range(dc, val + increment, increment):
         print("Duty cycle changing: Currently:  ", x)
         temp = x
@@ -58,7 +58,9 @@ def write_dc(val):
         str1 = ('PWM ' + str(temp) + '\n')
         ser.write(str1.encode())
         time.sleep(0.3)
-    dc = val
+    dc = val'''
+    str1 = ('PWM ' + str(val) + '\n')
+    ser.write(str1.encode())
 
 try:
         while 1:
